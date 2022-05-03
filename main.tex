@@ -105,7 +105,20 @@ Previous works such as DKT+ use an LSTM cell with a hidden shape of $(200,)$, so
 \subsection{Optimization}
 Traditional KT uses binary cross entropy loss to determine the prediction error, but our questions have multiclass answers so we need something different. For now we will assume the use of mean squared error loss, MSE. For the optimization algorithm we will use SGD.
 \subsection{Training}
-At each time step observed, $t$, retrieve the students oberservation feature vector \\ 
-$\{M1_t,Q1_t,M2_t,Q2_t\}$ and outcome vector $\{Q1\_response_t,Q2\_response_t\}$. Using our model $M$ with weights $w$, we can calculate the predicted response probabilities for this student interaction $P_t$. 
+At each time step observed, $t$, retrieve the students oberservation feature vector and outcome vector 
+\begin{align*}
+    x_t=\{M1_t,Q1_t,M2_t,Q2_t\} \\
+    y_t = \{Q1\_response_t,Q2\_response_t\}
+\end{align*}
+ Using our model $M$ with weights $w$, we can calculate the predicted response probabilities for this student interaction $P_t$ and recover the predicted responses. 
+\begin{align*}
+    P_t = M(x_t; w) \\
+    \hat{Q1_t} = argmax(P_{t,1}) \\
+    \hat{Q2_t} = argmax(P_{t,2}) 
+\end{align*}
+We can use these predicted responses and the true responses to calculate our loss and update the model weights $w$
+\begin{align*}
+    error = (\hat{Q1_t} - Q1_t)^2 + (\hat{Q2_t} - Q2_t)^2
+\end{align*}
 
 \end{document}

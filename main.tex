@@ -100,4 +100,12 @@ And the labels of our dataset:
     \item $Q1\_response$: the value of the users response to $Q1$ this timestep
     \item $Q2\_response$: the value of the users response to $Q2$ this timestep
 \end{itemize}
+\subsection{Model Architecture}
+Previous works such as DKT+ use an LSTM cell with a hidden shape of $(200,)$, so that is a good place to start. The input to our model will be a concatenation of $\{M1,Q1,M2,Q2\}$. The output of our model will be a $2x4$ vector $P$, where $P_{1,j}$ represents the probability that question 1 has the answer $j$, and similarly for $P_{2,j}$. We can recover the predicted answer by taking the argmax of the probabilities for each question. 
+\subsection{Optimization}
+Traditional KT uses binary cross entropy loss to determine the prediction error, but our questions have multiclass answers so we need something different. For now we will assume the use of mean squared error loss, MSE. For the optimization algorithm we will use SGD.
+\subsection{Training}
+At each time step observed, $t$, retrieve the students oberservation feature vector \\ 
+$\{M1_t,Q1_t,M2_t,Q2_t\}$ and outcome vector $\{Q1\_response_t,Q2\_response_t\}$. Using our model $M$ with weights $w$, we can calculate the predicted response probabilities for this student interaction $P_t$. 
+
 \end{document}
